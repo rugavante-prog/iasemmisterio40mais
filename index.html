@@ -61,6 +61,7 @@ h2{font-size:24px;color:var(--fg)}
 .group p{margin-top:10px;font-size:14px;color:var(--muted-fg)}
 .car{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;margin:20px -20px 0;padding:0 20px 12px;scrollbar-width:none;overscroll-behavior-x:contain}
 .car::-webkit-scrollbar{display:none}
+.car:has(.slide:only-child){justify-content:center}
 .slide{flex:0 0 74vw;max-width:320px;scroll-snap-align:center;background:var(--card);border-radius:24px;padding:16px;box-shadow:var(--shadow-soft)}
 .slide .ph{aspect-ratio:3/2}
 .mimg{width:100%;height:auto;border-radius:16px;border:1px solid var(--border);background:var(--card)}
@@ -246,16 +247,6 @@ window.redirectWithParams = redirectWithParams;
   <p class="sub" style="max-width:512px;margin-left:auto;margin-right:auto">Mapas visuais organizados por etapa, do jeito mais simples de entender.</p>
   <div class="kit" id="kit"></div>
 
-  <!-- EXTRA opcional: Arraste e compare -->
-  <h2 style="margin-top:56px">Arraste e compare</h2>
-  <p class="sub" style="max-width:520px;margin-left:auto;margin-right:auto">À esquerda, a tela vazia do ChatGPT, sem saber o que escrever. À direita, a mesma tela no mapa: o comando pronto e o resultado.</p>
-  <div class="cmp" id="cmp">
-    <div class="pane right"><img data-ph="img/cmp-mapa.webp · a tela no mapa, com comando e resultado" src="img/cmp-mapa.webp" width="900" height="600" alt="A tela do ChatGPT no mapa, com o comando pronto e o resultado" loading="lazy" decoding="async"></div>
-    <div class="pane left" id="cmpLeft"><img data-ph="img/cmp-tela-vazia.webp · tela vazia do ChatGPT" src="img/cmp-tela-vazia.webp" width="900" height="600" alt="A tela vazia do ChatGPT, sem saber o que escrever" loading="lazy" decoding="async"></div>
-    <span class="tag tl">Sem o mapa</span><span class="tag tr">Com o mapa</span>
-    <div class="line" id="cmpLine"></div><div class="knob" id="cmpKnob">↔</div>
-    <input type="range" min="0" max="100" value="50" aria-label="Arraste para comparar sem o mapa e com o mapa" id="cmpRange">
-  </div>
 </div></section>
 
 <!-- 8 -->
@@ -385,11 +376,11 @@ var VALOR={completo:37,basico:19.9};
 
 /* Carrossel: [emoji, categoria, subtítulo, [[nº do mapa, título], ...]] */
 var G=[
-["🚀","Primeiros Passos","Do zero ao primeiro uso",[[2,"Como Criar Sua Conta Grátis"],[3,"Falando com a IA por Voz"],[4,"Como Perguntar do Jeito Certo"],[5,"ChatGPT, Gemini ou Meta AI?"],[7,"Seus Primeiros 5 Comandos"]]],
-["🏠","IA no Dia a Dia","Resolve a rotina em segundos",[[11,"Receita com o que Tem na Geladeira"],[12,"Lista de Compras da Semana"],[14,"Planejar uma Viagem"],[15,"Mensagem de Aniversário"],[16,"Ideia de Presente"]]],
-["💼","IA no Trabalho","Faça em minutos o que levava a tarde",[[21,"E-mail Profissional em 1 Minuto"],[22,"Currículo Atualizado"],[23,"Orçamento para Cliente"],[25,"Resumir um Documento Longo"],[26,"Relatório Pronto"]]],
-["📱","IA no Celular e WhatsApp","A IA que já está no seu bolso",[[31,"Meta AI no WhatsApp"],[33,"Foto que Vira Texto"],[34,"Tradução por Voz"],[35,"Entender Bula de Remédio"],[36,"Entender o Resultado de um Exame"]]],
-["🎨","Criar com IA","Imagens, cartões e fotos de família",[[41,"Restaurar Foto Antiga"],[42,"Criar uma Imagem do Zero"],[43,"Cartão de Aniversário"],[45,"Figurinha para o WhatsApp"],[46,"Áudio com a Sua Mensagem"]]]
+["🚀","Primeiros Passos","Do zero ao primeiro uso",[[2,"Como Criar Sua Conta Grátis"]]],
+["🏠","IA no Dia a Dia","Resolve a rotina em segundos",[[11,"Receita com o que Tem na Geladeira"]]],
+["💼","IA no Trabalho","Faça em minutos o que levava a tarde",[[21,"E-mail Profissional em 1 Minuto"]]],
+["📱","IA no Celular e WhatsApp","A IA que já está no seu bolso",[[31,"Meta AI no WhatsApp"]]],
+["🎨","Criar com IA","Imagens, cartões e fotos de família",[[41,"Restaurar Foto Antiga"]]]
 ];
 /* Conteúdo do kit: [emoji, etapa, [títulos], mostrar "E muito mais"] */
 var K=[
@@ -408,7 +399,7 @@ var B=[
 ];
 function e(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 
-var h="";G.forEach(function(g,gi){h+='<div class="group"><h3>'+g[0]+' '+e(g[1])+'</h3><p>'+e(g[2])+'</p><div class="car" id="c'+gi+'">';g[3].forEach(function(m){var n=String(m[0]).padStart(2,"0"),src='img/mapas/mapa-'+n+'.webp';h+='<div class="slide"><img class="mimg" data-ph="'+src+'" src="'+src+'" width="640" height="905" alt="Mapa visual: '+e(m[1])+'" loading="lazy" decoding="async"><p>'+e(m[1])+'</p></div>'});h+='</div><div class="arrows"><button type="button" data-c="c'+gi+'" data-d="-1" aria-label="Ver mapas anteriores">‹</button><button type="button" data-c="c'+gi+'" data-d="1" aria-label="Ver mais mapas">›</button></div></div>'});
+var h="";G.forEach(function(g,gi){h+='<div class="group"><h3>'+g[0]+' '+e(g[1])+'</h3><p>'+e(g[2])+'</p><div class="car" id="c'+gi+'">';g[3].forEach(function(m){var n=String(m[0]).padStart(2,"0"),src='img/mapas/mapa-'+n+'.webp';h+='<div class="slide"><img class="mimg" data-ph="'+src+'" src="'+src+'" width="640" height="960" alt="Mapa visual: '+e(m[1])+'" loading="lazy" decoding="async"><p>'+e(m[1])+'</p></div>'});h+='</div>'+(g[3].length>1?'<div class="arrows"><button type="button" data-c="c'+gi+'" data-d="-1" aria-label="Ver mapas anteriores">‹</button><button type="button" data-c="c'+gi+'" data-d="1" aria-label="Ver mais mapas">›</button></div>':'')+'</div>'});
 document.getElementById("groups").innerHTML=h;
 document.getElementById("groups").addEventListener("click",function(ev){var b=ev.target.closest("button");if(!b)return;var c=document.getElementById(b.dataset.c),s=c.firstElementChild,d=+b.dataset.d;if(!s)return;var max=c.scrollWidth-c.clientWidth,step=s.offsetWidth+16;if(d>0&&c.scrollLeft>=max-4){c.scrollTo({left:0,behavior:"smooth"});return}if(d<0&&c.scrollLeft<=4){c.scrollTo({left:max,behavior:"smooth"});return}c.scrollTo({left:Math.max(0,Math.min(max,c.scrollLeft+step*d)),behavior:"smooth"})});
 
@@ -422,9 +413,7 @@ document.getElementById("bonus").innerHTML=h;
 function toPh(img){if(img.dataset.done)return;img.dataset.done=1;var d=document.createElement("div");d.className="ph";var p=(img.dataset.ph||img.getAttribute("src")).split(" · ");d.innerHTML='<b>IMAGEM AQUI</b>'+e(p[0])+(p[1]?'<span>'+e(p[1])+'</span>':'');var w=img.getAttribute("width"),hh=img.getAttribute("height");if(w&&hh)d.style.aspectRatio=w+"/"+hh;if(img.classList.contains("bimg")){d.style.maxWidth="220px";d.style.margin="0 auto"}if(img.classList.contains("kimg")){d.style.maxWidth="384px";d.style.margin="20px auto 0"}img.replaceWith(d)}
 document.querySelectorAll("img[data-ph]").forEach(function(img){if(img.complete&&img.naturalWidth===0)toPh(img);else img.addEventListener("error",function(){toPh(img)})});
 
-var r=document.getElementById("cmpRange"),L=document.getElementById("cmpLeft"),ln=document.getElementById("cmpLine"),kn=document.getElementById("cmpKnob");
-function upd(){var v=r.value;L.style.clipPath="inset(0 "+(100-v)+"% 0 0)";ln.style.left=v+"%";kn.style.left=v+"%"}
-r.addEventListener("input",upd);upd();
+
 
 function hoje(){return new Intl.DateTimeFormat("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"America/Sao_Paulo"}).format(new Date())}
 var hs=document.querySelectorAll(".hoje");function setH(){var d=hoje();hs.forEach(function(x){x.textContent=d})}setH();
